@@ -1,0 +1,115 @@
+@{
+    Layout = null; /* Bu sayfada üst menü (navbar) olmasın */
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kütüphane Girişi</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    
+    <style>
+        /* 1. TAM EKRAN ARKA PLAN RESMİ */
+       body {
+            /* İnternet linki yerine kendi dosyamızı kullanıyoruz */
+            background: url('/image/1884669.jpg') no-repeat center center fixed;
+            
+            background-size: cover;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* 2. KARARTMA PERDESİ (Resmin üzerine siyah tül atıyoruz ki yazılar okunsun) */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* %50 Siyahlık */
+            z-index: 1; /* En arkada */
+        }
+
+        /* 3. ORTADAKİ GİRİŞ KARTI */
+        .login-card {
+            background-color: rgba(255, 255, 255, 0.95); /* Hafif şeffaf beyaz kutu */
+            padding: 40px;
+            border-radius: 15px; /* Köşeleri yuvarlat */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6); /* Havalı bir gölge ver */
+            width: 90%; /* Mobilde taşmasın */
+            max-width: 400px; /* Bilgisayarda çok genişlemesin */
+            position: relative;
+            z-index: 2; /* Perdenin önünde dursun */
+            text-align: center;
+        }
+
+        .login-header h3 {
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+        
+        /* Yuvarlak giriş kutuları */
+        .form-control {
+            border-radius: 50px; 
+            padding: 12px 20px;
+            border: 1px solid #ced4da;
+        }
+
+        /* Yuvarlak ve renkli giriş butonu */
+        .btn-login {
+            border-radius: 50px;
+            padding: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            background: linear-gradient(to right, #0d6efd, #0a58ca); /* Mavi geçişli renk */
+            border: none;
+            width: 100%;
+        }
+
+        .btn-login:hover {
+            transform: scale(1.02); /* Üzerine gelince hafif büyüsün */
+            background: linear-gradient(to right, #0a58ca, #0d6efd);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <div class="login-card">
+        <div class="login-header">
+            <div class="mb-3" style="font-size: 3rem;">📚</div>
+            <h3>Kütüphane Sistemi</h3>
+            <p class="text-muted">Lütfen giriş yapınız</p>
+        </div>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger py-2 shadow-sm rounded-pill" role="alert">
+                ⚠️ @ViewBag.Error
+            </div>
+        }
+
+        <form asp-action="Login" method="post">
+            <div class="mb-3 text-start">
+                <input type="text" name="username" class="form-control" placeholder="Kullanıcı Adı" required autocomplete="off" />
+            </div>
+            <div class="mb-4 text-start">
+                <input type="password" name="password" class="form-control" placeholder="Şifre" required autocomplete="off" />
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-login text-white">GİRİŞ YAP</button>
+            </div>
+        </form>
+        
+        <div class="mt-4 text-muted small">
+            &copy; 2025 LibrarySystem | Güvenli Giriş
+        </div>
+    </div>
+
+</body>
+</html>

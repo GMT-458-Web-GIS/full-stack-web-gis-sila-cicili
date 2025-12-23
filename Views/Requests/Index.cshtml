@@ -1,0 +1,43 @@
+@model IEnumerable<LibrarySystem.Models.Request>
+
+<div class="container mt-5">
+    <h2 class="text-primary">🔔 Bekleyen Kitap Talepleri</h2>
+    <hr />
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">Şu an bekleyen talep yok.</div>
+    }
+    else
+    {
+        <table class="table table-hover table-bordered shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>Öğrenci</th>
+                    <th>Talep Edilen Kitap</th>
+                    <th>Talep Tarihi</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.User?.Username</td>
+                        <td>@item.Book?.Title</td>
+                        <td>@item.RequestDate?.ToString("dd.MM.yyyy HH:mm")</td>
+                        <td>
+                            <a asp-action="Approve" asp-route-id="@item.RequestId" class="btn btn-success btn-sm">✅ Onayla</a>
+                            <a asp-action="Reject" asp-route-id="@item.RequestId" class="btn btn-danger btn-sm" onclick="return confirm('Reddetmek istediğine emin misin?');">❌ Reddet</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

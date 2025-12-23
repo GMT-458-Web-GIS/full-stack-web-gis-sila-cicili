@@ -1,0 +1,82 @@
+﻿@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<div class="p-5 mb-4 rounded-3 shadow-lg text-center position-relative" 
+     style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1200&auto=format&fit=crop') no-repeat center center; background-size: cover; color: white;">
+    
+    <div class="container-fluid py-5">
+        <h1 class="display-4 fw-bold">📚 Kütüphane Yönetim Sistemi</h1>
+        <p class="col-md-8 fs-5 mx-auto mt-3">
+            Bilgiye açılan kapınız. Kitapları yönetin, üyeleri takip edin ve ödünç işlemlerini tek tıkla halledin.
+        </p>
+        
+        <a asp-controller="Books" asp-action="Index" class="btn btn-outline-light btn-lg px-4 gap-3 mt-3 fw-bold">📚 Kitapları İncele</a>
+    </div>
+</div>
+
+<div class="row text-center mb-5">
+    
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="display-4 text-success mb-2">📖</div> <h2 class="card-title fw-bold">@ViewBag.TotalBooks</h2>
+                <p class="text-muted">Toplam Kitap</p>
+            </div>
+            <div class="card-footer bg-white border-top-0">
+                @if (User.IsInRole("admin"))
+                {
+                    <a asp-controller="Books" asp-action="Create" class="btn btn-success btn-sm w-100 rounded-pill">Yeni Kitap Ekle +</a>
+                }
+                else
+                {
+                    <span class="text-muted small">Sadece Okuma</span>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="display-4 text-info mb-2">👥</div> <h2 class="card-title fw-bold">@ViewBag.TotalUsers</h2>
+                <p class="text-muted">Kayıtlı Üye</p>
+            </div>
+             <div class="card-footer bg-white border-top-0">
+                @if (User.IsInRole("admin"))
+                {
+                    <a asp-controller="Users" asp-action="Create" class="btn btn-info text-white btn-sm w-100 rounded-pill">Yeni Üye Kaydet +</a>
+                }
+                else
+                {
+                    <span class="text-muted small">Üyelik İşlemleri</span>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="display-4 text-warning mb-2">🔄</div> <h2 class="card-title fw-bold">@ViewBag.ActiveLoans</h2>
+                <p class="text-muted">Ödünçteki Kitap</p>
+            </div>
+             <div class="card-footer bg-white border-top-0">
+                @if (User.IsInRole("admin"))
+                {
+                    <a asp-controller="Loans" asp-action="Index" class="btn btn-warning text-dark btn-sm w-100 rounded-pill">Takip Listesine Git &raquo;</a>
+                }
+                else
+                {
+                    <span class="text-muted small">Yönetici Paneli</span>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-12 text-center text-muted border-top pt-3">
+        <small>Kütüphane Yönetim Sistemi v1.0 | © 2025 Tüm Hakları Saklıdır.</small>
+    </div>
+</div>

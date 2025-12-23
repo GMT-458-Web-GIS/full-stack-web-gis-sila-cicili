@@ -1,0 +1,79 @@
+@model IEnumerable<LibrarySystem.Models.Book>
+
+<div class="container mt-5">
+    
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-warning">@TempData["Message"]</div>
+    }
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>📚 Kitap Listesi</h2>
+        @if (User.IsInRole("admin"))
+        {
+            <a asp-action="Create" class="btn btn-primary">Yeni Kitap Ekle +</a>
+        }
+    </div>
+
+    <form asp-action="Index" method="get" class="mb-3 input-group">
+        <input type="text" name="searchString" class="form-control" placeholder="Kitap Ara..." />
+        <button class="btn btn-primary">Ara</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Temizle</a>
+    </form>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Kitap Adı</th>
+                <th>Yazar</th>
+                <th>Kategori</th>
+                <th>Stok</th>
+                @if (User.IsInRole("admin")) { <th>Yönetim</th> }
+                @if (User.IsInRole("student")) { <th>İşlem</th> }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Author</td>
+                    <td>@book.Category</td>
+                    <td>
+                        @if (book.CurrentStock > 0) {
+                            <span class="badge bg-success">@book.CurrentStock Mevcut</span>
+                        } else {
+                            <span class="badge bg-danger">Tükendi</span>
+                        }
+                    </td>
+                    
+                    @if (User.IsInRole("admin"))
+                    {
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@book.BookId" class="btn btn-sm btn-warning">Düzenle</a>
+                            <a asp-action="Delete" asp-route-id="@book.BookId" class="btn btn-sm btn-danger">Sil</a>
+                        </td>
+                    }
+
+                    @if (User.IsInRole("student"))
+                    {
+                        <td>
+                            @if (book.CurrentStock > 0)
+                            {
+                                <a asp-action="RequestBook" asp-route-id="@book.BookId" class="btn btn-sm btn-primary">📖 Talep Et</a>
+                            }
+                            else
+                            {
+                                <button class="btn btn-sm btn-secondary" disabled>Stok Yok</button>
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

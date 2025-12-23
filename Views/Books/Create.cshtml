@@ -1,0 +1,35 @@
+@model LibrarySystem.Models.Book
+
+<div class="container mt-5">
+    <h2 class="text-primary">Yeni Kitap Ekle</h2>
+    <hr />
+    
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Create">
+                <div class="mb-3">
+                    <label class="form-label">Kitap Adı</label>
+                    <input asp-for="Title" class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Yazar</label>
+                    <input asp-for="Author" class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Kategori</label>
+                    <input asp-for="Category" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Toplam Stok Sayısı</label>
+                    <input asp-for="TotalStock" type="number" class="form-control" min="1" value="1" required />
+                </div>
+
+                <button type="submit" class="btn btn-success">Kaydet</button>
+                <a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
+            </form>
+        </div>
+    </div>
+</div>

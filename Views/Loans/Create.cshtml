@@ -1,0 +1,36 @@
+@model LibrarySystem.Models.Loan
+
+<div class="container mt-5">
+    <h2 class="text-success">📖 Kitap Ödünç Ver</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Create">
+                
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Üye Seçin</label>
+                    <select asp-for="UserId" class="form-select" asp-items="ViewBag.UserId">
+                        <option value="">-- Üye Seçiniz --</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Kitap Seçin</label>
+                    <select asp-for="BookId" class="form-select" asp-items="ViewBag.BookId">
+                         <option value="">-- Kitap Seçiniz --</option>
+                    </select>
+                    <small class="text-muted">* Sadece stoğu olan kitaplar listelenir.</small>
+                </div>
+
+                <div class="alert alert-info">
+                    ℹ️ Kitap bugün verilecek ve otomatik olarak <b>15 gün</b> süre tanımlanacaktır.
+                </div>
+
+                <button type="submit" class="btn btn-success">Ödünç Ver</button>
+                <a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
+            </form>
+        </div>
+    </div>
+</div>

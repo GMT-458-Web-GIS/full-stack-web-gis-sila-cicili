@@ -1,0 +1,48 @@
+@model LibrarySystem.Models.User
+
+<div class="container mt-5">
+    <h2 class="text-primary">Yeni Üye Kaydı</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Create">
+                <div class="mb-3">
+                    <label class="form-label">Ad</label>
+                    <input asp-for="FirstName" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Soyad</label>
+                    <input asp-for="LastName" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Kullanıcı Adı</label>
+                    <input asp-for="Username" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input asp-for="Email" type="email" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Şifre</label>
+                    <input asp-for="PasswordHash" type="password" class="form-control" required />
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Rol Seçin</label>
+                    <select asp-for="Role" class="form-select">
+                        <option value="student">Öğrenci</option>
+                        <option value="admin">Yönetici (Admin)</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Telefon</label>
+                    <input asp-for="Phone" class="form-control" />
+                </div>
+
+                <button type="submit" class="btn btn-success">Kaydet</button>
+                <a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
+            </form>
+        </div>
+    </div>
+</div>
