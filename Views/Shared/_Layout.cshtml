@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/LibrarySystem.styles.css" asp-append-version="true" />
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
     <header>
@@ -27,6 +29,10 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Index">Kitap Listesi</a>
                         </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Map" asp-action="Index">🌍 Şubeler Haritası</a>
+                        </li>
 
                         @if (User.IsInRole("admin"))
                         {
@@ -35,22 +41,19 @@
                         </li>
                         }
 
-
                         @if (User.IsInRole("admin"))
-{
+                        {
                         <li class="nav-item">
                              <a class="nav-link text-dark" asp-area="" asp-controller="Loans" asp-action="Index">Ödünç İşlemleri</a>
                         </li>
                         }
 
                         @if (User.IsInRole("admin"))
-{
-                       <li class="nav-item">
-                           <a class="nav-link text-danger fw-bold" asp-area="" asp-controller="Requests" asp-action="Index">🔔 Talepler</a>
+                        {
+                        <li class="nav-item">
+                            <a class="nav-link text-danger fw-bold" asp-area="" asp-controller="Requests" asp-action="Index">🔔 Talepler</a>
                         </li>
                         }
-
-
                     </ul>
 
                     <ul class="navbar-nav">
@@ -75,12 +78,12 @@
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2025 - LibrarySystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -89,6 +92,9 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

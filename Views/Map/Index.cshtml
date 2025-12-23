@@ -6,31 +6,168 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <div class="container mt-4">
-    <h2>📍 Kütüphane Şubeleri Haritası</h2>
-    <p>GIS Tabanlı Kütüphane Konumlandırma Sistemi</p>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h2>📍 Kütüphane Şubeleri</h2>
+            <p class="text-muted mb-0">Coğrafi Bilgi Sistemi (GIS)</p>
+        </div>
+        
+        @if (User.IsInRole("admin"))
+        {
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBranchModal">
+                ➕ Yeni Şube Ekle
+            </button>
+        }
+    </div>
     
-    <div id="map" style="height: 500px; width: 100%; border-radius: 10px; border: 2px solid #ddd;"></div>
+    <div id="map" style="height: 500px; width: 100%; border-radius: 10px; border: 2px solid #ddd; position: relative;"></div>
+</div>
+
+<div class="modal fade" id="addBranchModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Yeni Kütüphane Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addBranchForm">
+                    <div class="mb-3">
+                        <label class="form-label">Şube Adı</label>
+                        <input type="text" class="form-control" id="branchName" required placeholder="Örn: Merkez Kütüphane">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Adres</label>
+                        <textarea class="form-control" id="branchAddress" rows="2" required placeholder="Tam adres giriniz..."></textarea>
+                    </div>
+                    
+                    <div class="alert alert-info p-2">
+                        <small>Haritadan konum seçmek için aşağıdaki butona basın.</small>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label class="form-label">Enlem (Lat)</label>
+                            <input type="text" class="form-control" id="branchLat" readonly>
+                        </div>
+                        <div class="col">
+                            <label class="form-label">Boylam (Lng)</label>
+                            <input type="text" class="form-control" id="branchLng" readonly>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-outline-secondary w-100 mb-3" onclick="startLocationSelection()">
+                        📍 Haritadan Konum Seç
+                    </button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                <button type="button" class="btn btn-success" onclick="saveBranch()">💾 Kaydet</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-    // 1. Haritayı Başlat (Merkez: Ankara)
+    // 1. Haritayı Başlat
     var map = L.map('map').setView([39.92, 32.85], 11);
 
-    // 2. Harita Katmanını Ekle (OpenStreetMap)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // 3. API'den Verileri Çek ve İşaretle
-    fetch('/api/LibraryApi')
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(branch => {
-                // Her kütüphane için bir işaretçi (Marker) ekle
-                L.marker([branch.lat, branch.lng])
-                    .addTo(map)
-                    .bindPopup(`<b>${branch.name}</b><br>${branch.address}`);
-            });
+    // Seçilen konumu göstermek için geçici marker
+    var selectionMarker;
+    var isSelectingLocation = false;
+
+    // 2. Verileri Çek
+    loadBranches();
+
+    function loadBranches() {
+        fetch('/api/LibraryApi')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(branch => {
+                    L.marker([branch.lat, branch.lng])
+                        .addTo(map)
+                        .bindPopup(`<b>${branch.name}</b><br>${branch.address}`);
+                });
+            })
+            .catch(error => console.error('Hata:', error));
+    }
+
+    // --- YENİ FONKSİYONLAR ---
+
+    // Konum Seçme Modunu Başlat
+    function startLocationSelection() {
+        // Modalı kapat
+        var modalEl = document.getElementById('addBranchModal');
+        var modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
+
+        isSelectingLocation = true;
+        
+        // Kullanıcıya bilgi ver (Haritanın üstüne yazı ekleyerek)
+        alert("Lütfen haritada kütüphanenin konumunu işaretleyin.");
+        document.getElementById('map').style.cursor = "crosshair"; // İmleci değiştir
+    }
+
+    // Haritaya Tıklama Olayı
+    map.on('click', function(e) {
+        if (isSelectingLocation) {
+            // Enlem Boylamı al
+            var lat = e.latlng.lat;
+            var lng = e.latlng.lng;
+
+            // Formdaki kutulara yaz
+            document.getElementById('branchLat').value = lat;
+            document.getElementById('branchLng').value = lng;
+
+            // Haritaya geçici işaret koy
+            if (selectionMarker) map.removeLayer(selectionMarker);
+            selectionMarker = L.marker([lat, lng]).addTo(map);
+
+            // Modalı tekrar aç
+            var modal = new bootstrap.Modal(document.getElementById('addBranchModal'));
+            modal.show();
+
+            // Seçim modunu bitir
+            isSelectingLocation = false;
+            document.getElementById('map').style.cursor = "";
+        }
+    });
+
+    // Kaydet Butonuna Basınca
+    function saveBranch() {
+        var name = document.getElementById('branchName').value;
+        var address = document.getElementById('branchAddress').value;
+        var lat = document.getElementById('branchLat').value;
+        var lng = document.getElementById('branchLng').value;
+
+        if (!name || !address || !lat) {
+            alert("Lütfen tüm alanları doldurun ve haritadan konum seçin!");
+            return;
+        }
+
+        // Veriyi gönder
+        fetch('/api/LibraryApi', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: name,
+                address: address, // Artık adresi de gönderiyoruz
+                lat: parseFloat(lat),
+                lng: parseFloat(lng)
+            })
         })
-        .catch(error => console.error('Hata:', error));
-</script> 
+        .then(response => {
+            if (response.ok) {
+                alert("✅ Kütüphane başarıyla eklendi!");
+                location.reload(); // Sayfayı yenile ki yeni şube görünsün
+            } else {
+                alert("Hata oluştu!");
+            }
+        });
+    }
+</script>
