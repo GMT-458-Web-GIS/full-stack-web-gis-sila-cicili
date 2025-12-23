@@ -1,0 +1,36 @@
+@{
+    ViewData["Title"] = "Kütüphane Haritası";
+}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<div class="container mt-4">
+    <h2>📍 Kütüphane Şubeleri Haritası</h2>
+    <p>GIS Tabanlı Kütüphane Konumlandırma Sistemi</p>
+    
+    <div id="map" style="height: 500px; width: 100%; border-radius: 10px; border: 2px solid #ddd;"></div>
+</div>
+
+<script>
+    // 1. Haritayı Başlat (Merkez: Ankara)
+    var map = L.map('map').setView([39.92, 32.85], 11);
+
+    // 2. Harita Katmanını Ekle (OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // 3. API'den Verileri Çek ve İşaretle
+    fetch('/api/LibraryApi')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(branch => {
+                // Her kütüphane için bir işaretçi (Marker) ekle
+                L.marker([branch.lat, branch.lng])
+                    .addTo(map)
+                    .bindPopup(`<b>${branch.name}</b><br>${branch.address}`);
+            });
+        })
+        .catch(error => console.error('Hata:', error));
+</script> 

@@ -46,12 +46,14 @@ namespace LibrarySystem.Controllers
             }
 
             ViewBag.Error = "Kullanıcı adı veya şifre hatalı!";
+
             return View();
         }
 
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
             return RedirectToAction("Login");
         }
     }

@@ -1,25 +1,34 @@
+using LibrarySystem.Services;
 using Microsoft.EntityFrameworkCore;
 using LibrarySystem.Models;
-using Microsoft.AspNetCore.Authentication.Cookies; // Gerekli kütüphane
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Tarih ayarı (PostgreSQL hatası için)
+// Tarih ayarı
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 builder.Services.AddControllersWithViews();
 
-// 1. GİRİŞ SİSTEMİ AYARI (COOKIE)
+// 1. GİRİŞ SİSTEMİ
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Account/Login"; // Giriş yapmamış kişiyi buraya at
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(20); // 20 dakika sonra at
+        options.LoginPath = "/Account/Login";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
     });
 
-// Veritabanı Bağlantısı
+// 2. VERİTABANI BAĞLANTISI (HARİTA AYARIYLA BERABER) 🌍
 builder.Services.AddDbContext<KütüphaneeContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("LibraryContext")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("LibraryContext"), 
+        o => o.UseNetTopologySuite())); // ⚠️ BU SATIR HAYAT KURTARIR
+
+// Servisler
+builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ILoanService, LoanService>();
+builder.Services.AddScoped<IRequestService, RequestService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 var app = builder.Build();
 
@@ -34,9 +43,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// 2. BU İKİ SATIR ÇOK ÖNEMLİ (SIRASI BOZULMAMALI)
-app.UseAuthentication(); // Kimlik Kontrolü (Kimsin?)
-app.UseAuthorization();  // Yetki Kontrolü (Girebilir misin?)
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",

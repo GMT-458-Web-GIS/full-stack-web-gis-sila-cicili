@@ -71,9 +71,13 @@ C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\n
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net10.0\Microsoft.Extensions.DependencyModel.dll
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net10.0\Microsoft.NET.StringTools.dll
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net10.0\Mono.TextTemplating.dll
+C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net10.0\NetTopologySuite.dll
+C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net10.0\NetTopologySuite.IO.PostGis.dll
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net10.0\Newtonsoft.Json.dll
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net10.0\Npgsql.dll
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net10.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net10.0\Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite.dll
+C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net10.0\Npgsql.NetTopologySuite.dll
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net10.0\System.CodeDom.dll
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net10.0\System.Composition.AttributedModel.dll
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net10.0\System.Composition.Convention.dll
@@ -162,6 +166,8 @@ C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\obj\Debug\n
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\obj\Debug\net10.0\LibrarySystem.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\obj\Debug\net10.0\LibrarySystem.RazorAssemblyInfo.cache
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\obj\Debug\net10.0\LibrarySystem.RazorAssemblyInfo.cs
+C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\obj\Debug\net10.0\EFCoreNpgsqlNetTopologySuite.cs
+C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\obj\Debug\net10.0\LibrarySystem.sourcelink.json
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\obj\Debug\net10.0\rjimswa.dswa.cache.json
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
