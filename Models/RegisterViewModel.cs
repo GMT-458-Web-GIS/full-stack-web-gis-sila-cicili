@@ -4,32 +4,29 @@ namespace LibrarySystem.Models
 {
     public class RegisterViewModel
     {
-        [Required(ErrorMessage = "Ad zorunludur.")]
-        [Display(Name = "Ad")]
-        public string FirstName { get; set; } // 👇 Yeni eklendi (Veritabanı istiyor)
+        [Required(ErrorMessage = "Ad alanı zorunludur.")]
+        public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Soyad zorunludur.")]
-        [Display(Name = "Soyad")]
-        public string LastName { get; set; } // 👇 Yeni eklendi
+        [Required(ErrorMessage = "Soyad alanı zorunludur.")]
+        public string LastName { get; set; }
 
-        [Required(ErrorMessage = "Email zorunludur.")]
-        [EmailAddress(ErrorMessage = "Geçerli bir email giriniz.")]
-        [Display(Name = "E-Posta")]
-        public string Email { get; set; } // 👇 Yeni eklendi
+        [Required(ErrorMessage = "E-Posta alanı zorunludur.")]
+        [EmailAddress]
+        public string Email { get; set; }
 
         [Required(ErrorMessage = "Kullanıcı adı zorunludur.")]
-        [Display(Name = "Kullanıcı Adı")]
         public string Username { get; set; }
 
         [Required(ErrorMessage = "Şifre zorunludur.")]
         [DataType(DataType.Password)]
-        [Display(Name = "Şifre")]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Şifre tekrarı zorunludur.")]
         [DataType(DataType.Password)]
-        [Display(Name = "Şifre Tekrar")]
-        [Compare("Password", ErrorMessage = "Şifreler uyuşmuyor!")]
+        [Compare("Password", ErrorMessage = "Şifreler uyuşmuyor.")]
         public string ConfirmPassword { get; set; }
+
+        // 👇 BU SATIRI EKLEMEZSEN HATA VERİR!
+        public string? Role { get; set; } 
     }
 }

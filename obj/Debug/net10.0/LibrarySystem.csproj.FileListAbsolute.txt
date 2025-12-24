@@ -249,3 +249,8 @@ C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\obj\Debug\n
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\obj\Debug\net10.0\LibrarySystem.pdb
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\obj\Debug\net10.0\LibrarySystem.genruntimeconfig.cache
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\obj\Debug\net10.0\ref\LibrarySystem.dll
+C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net10.0\Microsoft.OpenApi.dll
+C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\obj\Debug\net10.0\LibrarySystem.MvcApplicationPartsAssemblyInfo.cs

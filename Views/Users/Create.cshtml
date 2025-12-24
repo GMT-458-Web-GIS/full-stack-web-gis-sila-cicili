@@ -29,12 +29,11 @@
                 
                 <div class="mb-3">
                     <label class="form-label">Rol Seçin</label>
-                    <select asp-for="Role" class="form-select">
-                        <option value="student">Öğrenci</option>
-                        <option value="admin">Yönetici (Admin)</option>
+                    
+                    <select asp-for="Role" class="form-select" asp-items="@(new SelectList(ViewBag.Roles, "Value", "Text"))">
+                        <option value="" disabled selected>Rol Seçiniz...</option>
                     </select>
                 </div>
-
                 <div class="mb-3">
                     <label class="form-label">Telefon</label>
                     <input asp-for="Phone" class="form-control" />

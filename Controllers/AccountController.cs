@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering; // SelectListItem için gerekli
 using LibrarySystem.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
@@ -23,6 +24,8 @@ namespace LibrarySystem.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            // Rol listesini oluşturup ViewBag ile sayfaya gönderiyoruz
+            ViewBag.Roles = GetRolesList();
             return View();
         }
 
@@ -32,36 +35,48 @@ namespace LibrarySystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                // 1. Bu kullanıcı adı zaten var mı?
+                // 1. Kullanıcı adı kontrolü
                 var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Username == model.Username);
                 if (existingUser != null)
                 {
                     ModelState.AddModelError("", "Bu kullanıcı adı zaten kullanılıyor.");
+                    ViewBag.Roles = GetRolesList(); // Hata olursa liste kaybolmasın
                     return View(model);
                 }
 
                 // 2. Yeni Kullanıcı Oluştur
-                // ⚠️ BURASI ÖNEMLİ: Hata almamak için tüm zorunlu alanları dolduruyoruz.
                 var newUser = new User
                 {
-                    FirstName = model.FirstName, // Veritabanındaki 'first_name' hatasını çözer
-                    LastName = model.LastName,   // Veritabanındaki 'last_name' için
-                    Email = model.Email,         // Veritabanındaki 'email' için
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
                     Username = model.Username,
-                    PasswordHash = model.Password, // Şifreyi veritabanındaki ismine göre atıyoruz
-                    Role = "student" // Varsayılan olarak öğrenci
+                    PasswordHash = model.Password,
+                    // Seçilen rolü atıyoruz, boşsa "student" yapıyoruz
+                    Role = !string.IsNullOrEmpty(model.Role) ? model.Role : "student"
                 };
 
                 _context.Users.Add(newUser);
                 await _context.SaveChangesAsync();
 
-                // 3. Başarılı ise Giriş sayfasına yönlendir
                 TempData["Message"] = "Kayıt başarılı! Lütfen giriş yapınız.";
                 return RedirectToAction("Login");
             }
 
-            // Hata varsa formu tekrar göster
+            // Hata durumunda listeyi tekrar doldur
+            ViewBag.Roles = GetRolesList();
             return View(model);
+        }
+
+        // Rol listesini oluşturan yardımcı metot (Kod tekrarını önlemek için)
+        private List<SelectListItem> GetRolesList()
+        {
+            return new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Öğrenci", Value = "member" }, // Veritabanında 'member' veya 'student' ne kullanıyorsan onu yaz
+                new SelectListItem { Text = "Akademisyen", Value = "Akademisyen" },
+                new SelectListItem { Text = "Yönetici (Admin)", Value = "admin" }
+            };
         }
 
         // ==========================================
@@ -77,35 +92,26 @@ namespace LibrarySystem.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
-            // Veritabanında bu kullanıcı var mı?
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Username == username && u.PasswordHash == password);
 
             if (user != null)
             {
-                // Kullanıcı bulundu, kimlik kartını (Cookie) hazırlayalım
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.Username ?? ""),
-                    new Claim(ClaimTypes.Role, user.Role ?? "") // Rolü sisteme tanıtıyoruz
+                    new Claim(ClaimTypes.Role, user.Role ?? "")
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                // Giriş yap
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-                // Başarılı giriş sonrası yönlendirme
-                return RedirectToAction("Index", "Home"); // Veya "Books"
+                return RedirectToAction("Index", "Home");
             }
 
             ViewBag.Error = "Kullanıcı adı veya şifre hatalı!";
             return View();
         }
-
-        // ==========================================
-        // 👇 ÇIKIŞ YAPMA (LOGOUT) İŞLEMLERİ 👇
-        // ==========================================
 
         public async Task<IActionResult> Logout()
         {
