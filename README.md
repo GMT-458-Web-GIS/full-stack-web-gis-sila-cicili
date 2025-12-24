@@ -139,9 +139,9 @@ To demonstrate the impact of indexing mechanisms (B-Trees) on query performance,
 
 ### 📊 Findings & Analysis
 
-| Metric | Before Indexing (Baseline) | After Indexing (B-Tree) | Improvement |
+| Metric | Before Indexing (Baseline) | After Indexing (B-Tree) |
 | :--- | :--- | :--- | :--- |
-| **Scan Type** | Seq Scan (Sequential Scan) | 
+| **Scan Type** | Seq Scan (Sequential Scan) | **Index Scan** | 
 | **Execution Time** | **22.742 ms** | **0.100 ms** | 
 | **Planning Time** | 2.294 ms | 4.961 ms | 
 
