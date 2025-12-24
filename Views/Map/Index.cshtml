@@ -1,201 +1,81 @@
+@model IEnumerable<LibrarySystem.Models.LibraryBranch>
+
 @{
-    ViewData["Title"] = "Kütüphane Haritası";
+    ViewData["Title"] = "Şubeler Haritası";
+
+    // Veri Hazırlama: Hatalı kayıtları yine temizliyoruz
+    var mapData = new List<dynamic>();
+    if (Model != null)
+    {
+        mapData = Model
+            .Where(b => b.Location != null && Math.Abs(b.Location.Y) > 1.0) 
+            .Select(b => new
+            {
+                name = b.Name,
+                address = b.Address,
+                lat = b.Location.Y, 
+                lng = b.Location.X  
+            }).ToList<dynamic>();
+    }
 }
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <div>
-            <h2>📍 Kütüphane Şubeleri</h2>
-            <p class="text-muted mb-0">Coğrafi Bilgi Sistemi (GIS)</p>
+    <div class="card shadow border-0">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0"><i class="bi bi-geo-alt-fill"></i> Kütüphane Şubeleri</h4>
+            
+            <div>
+                <a asp-controller="LibraryBranches" asp-action="Index" class="btn btn-outline-light me-2">
+                    <i class="bi bi-list-ul"></i> Listeye Dön
+                </a>
+
+                <a asp-controller="LibraryBranches" asp-action="Create" class="btn btn-light text-primary fw-bold">
+                    ➕ Yeni Şube Ekle
+                </a>
+            </div>
         </div>
-        
-        @if (User.IsInRole("admin"))
-        {
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBranchModal">
-                ➕ Yeni Şube Ekle
-            </button>
-        }
-    </div>
-    
-    <div id="map" style="height: 500px; width: 100%; border-radius: 10px; border: 2px solid #ddd; position: relative;"></div>
-</div>
 
-<div class="modal fade" id="addBranchModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">Yeni Kütüphane Ekle</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="addBranchForm">
-                    <div class="mb-3">
-                        <label class="form-label">Şube Adı</label>
-                        <input type="text" class="form-control" id="branchName" required placeholder="Örn: Merkez Kütüphane">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Adres</label>
-                        <textarea class="form-control" id="branchAddress" rows="2" required placeholder="Tam adres giriniz..."></textarea>
-                    </div>
-                    
-                    <div class="alert alert-info p-2">
-                        <small>Haritadan konum seçmek için aşağıdaki butona basın.</small>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col">
-                            <label class="form-label">Enlem (Lat)</label>
-                            <input type="text" class="form-control" id="branchLat" readonly>
-                        </div>
-                        <div class="col">
-                            <label class="form-label">Boylam (Lng)</label>
-                            <input type="text" class="form-control" id="branchLng" readonly>
-                        </div>
-                    </div>
-
-                    <button type="button" class="btn btn-outline-secondary w-100 mb-3" onclick="startLocationSelection()">
-                        📍 Haritadan Konum Seç
-                    </button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
-                <button type="button" class="btn btn-success" onclick="saveBranch()">💾 Kaydet</button>
-            </div>
+        <div class="card-body p-0">
+            <div id="map" style="height: 600px; width: 100%; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;"></div>
         </div>
     </div>
 </div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-    // 1. Haritayı Başlat
-    var map = L.map('map').setView([39.92, 32.85], 11);
+    // 1. Haritayı Ankara'ya Kilitliyoruz (Zoom: 11)
+    var map = L.map('map').setView([39.9334, 32.8597], 11);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // Yetki kontrolü (Razor -> JS)
-    var isAdmin = @(User.IsInRole("admin").ToString().ToLower());
-
-    // Konum seçme değişkenleri
-    var selectionMarker;
-    var isSelectingLocation = false;
-
-    // 2. Verileri Çek
-    loadBranches();
-
-    function loadBranches() {
-        // Haritadaki eski pinleri temizlemek gerekirse buraya map.eachLayer... eklenebilir
-        // Ama şimdilik basit tutalım.
-        
-        fetch('/api/LibraryApi')
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(branch => {
-                    
-                    // Baloncuk İçeriğini Hazırla
-                    let popupContent = `<div class="text-center">
-                                            <b>${branch.name}</b><br>
-                                            <span class="text-muted" style="font-size:12px">${branch.address}</span>
-                                        </div>`;
-
-                    // EĞER ADMİN İSE SİL BUTONU EKLE 🗑️
-                    if (isAdmin) {
-                        popupContent += `<hr class="my-2">
-                                         <button class="btn btn-danger btn-sm w-100" onclick="deleteBranch(${branch.id})">
-                                            🗑️ Şubeyi Sil
-                                         </button>`;
-                    }
-
-                    // İşaretçiyi haritaya ekle
-                    L.marker([branch.lat, branch.lng])
-                        .addTo(map)
-                        .bindPopup(popupContent);
-                });
-            })
-            .catch(error => console.error('Hata:', error));
-    }
-
-    // --- SİLME FONKSİYONU (YENİ) ---
-    function deleteBranch(id) {
-        if (confirm("Bu kütüphane şubesini silmek istediğinize emin misiniz? Bu işlem geri alınamaz!")) {
-            fetch(`/api/LibraryApi/${id}`, {
-                method: 'DELETE'
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert("🗑️ Kütüphane silindi.");
-                    location.reload(); // Haritayı yenile
-                } else {
-                    alert("Hata oluştu, silinemedi.");
-                }
-            })
-            .catch(err => console.error(err));
-        }
-    }
-
-    // --- EKLEME İŞLEMLERİ (ESKİ KODLARIN AYNISI) ---
-
-    function startLocationSelection() {
-        var modalEl = document.getElementById('addBranchModal');
-        var modal = bootstrap.Modal.getInstance(modalEl);
-        modal.hide();
-
-        isSelectingLocation = true;
-        alert("Lütfen haritada kütüphanenin konumunu işaretleyin.");
-        document.getElementById('map').style.cursor = "crosshair";
-    }
-
-    map.on('click', function(e) {
-        if (isAdmin && isSelectingLocation) {
-            var lat = e.latlng.lat;
-            var lng = e.latlng.lng;
-
-            document.getElementById('branchLat').value = lat;
-            document.getElementById('branchLng').value = lng;
-
-            if (selectionMarker) map.removeLayer(selectionMarker);
-            selectionMarker = L.marker([lat, lng]).addTo(map);
-
-            var modal = new bootstrap.Modal(document.getElementById('addBranchModal'));
-            modal.show();
-
-            isSelectingLocation = false;
-            document.getElementById('map').style.cursor = "";
-        }
+    var blueIcon = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
     });
 
-    function saveBranch() {
-        var name = document.getElementById('branchName').value;
-        var address = document.getElementById('branchAddress').value;
-        var lat = document.getElementById('branchLat').value;
-        var lng = document.getElementById('branchLng').value;
+    // 2. Verileri Al
+    var branches = @Html.Raw(Json.Serialize(mapData)) || [];
 
-        if (!name || !address || !lat) {
-            alert("Lütfen tüm alanları doldurun!");
-            return;
+    // 3. Raptiyeleri Ekle
+    branches.forEach(function (branch) {
+        if (branch.lat && branch.lng) {
+            L.marker([branch.lat, branch.lng], { icon: blueIcon })
+                .addTo(map)
+                .bindPopup(`
+                    <div style="text-align:center;">
+                        <strong style="font-size:14px;">${branch.name}</strong><br>
+                        <span style="font-size:12px; color:grey;">${branch.address}</span>
+                    </div>
+                `);
         }
-
-        fetch('/api/LibraryApi', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name: name,
-                address: address,
-                lat: parseFloat(lat),
-                lng: parseFloat(lng)
-            })
-        })
-        .then(response => {
-            if (response.ok) {
-                alert("✅ Eklendi!");
-                location.reload();
-            } else {
-                alert("Hata oluştu!");
-            }
-        });
-    }
+    });
 </script>

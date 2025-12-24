@@ -1,0 +1,35 @@
+@model LibrarySystem.Models.LibraryBranch
+
+@{ ViewData["Title"] = "Şubeyi Düzenle"; }
+
+<div class="container mt-5">
+    <div class="card shadow" style="max-width: 600px; margin: auto;">
+        <div class="card-header bg-warning">
+            <h4 class="mb-0">✏️ Şubeyi Düzenle</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit">
+                <input type="hidden" asp-for="Id" />
+                
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label">Şube Adı</label>
+                    <input asp-for="Name" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Address" class="form-label">Adres</label>
+                    <textarea asp-for="Address" class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="alert alert-secondary">
+                    <small>ℹ️ Konum değiştirmek için şubeyi silip haritadan yeniden ekleyiniz.</small>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-warning">Güncelle</button>
+                    <a asp-action="Index" class="btn btn-light">İptal</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

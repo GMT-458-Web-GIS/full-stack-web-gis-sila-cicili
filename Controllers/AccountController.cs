@@ -17,7 +17,7 @@ namespace LibrarySystem.Controllers
         }
 
         // ==========================================
-        // 👇 YENİ EKLENEN KISIM: ÜYE OL (REGISTER) 👇
+        // 👇 KAYIT OLMA (REGISTER) İŞLEMLERİ 👇
         // ==========================================
 
         [HttpGet]
@@ -32,7 +32,7 @@ namespace LibrarySystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                // 1. Bu kullanıcı adı zaten var mı kontrol et
+                // 1. Bu kullanıcı adı zaten var mı?
                 var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Username == model.Username);
                 if (existingUser != null)
                 {
@@ -41,32 +41,34 @@ namespace LibrarySystem.Controllers
                 }
 
                 // 2. Yeni Kullanıcı Oluştur
+                // ⚠️ BURASI ÖNEMLİ: Hata almamak için tüm zorunlu alanları dolduruyoruz.
                 var newUser = new User
                 {
+                    FirstName = model.FirstName, // Veritabanındaki 'first_name' hatasını çözer
+                    LastName = model.LastName,   // Veritabanındaki 'last_name' için
+                    Email = model.Email,         // Veritabanındaki 'email' için
                     Username = model.Username,
-                    // Senin Login kodunda veritabanındaki adının 'PasswordHash' olduğunu gördüm:
-                    PasswordHash = model.Password, 
-                    Role = "student" // ⚠️ Varsayılan olarak öğrenci yapıyoruz
+                    PasswordHash = model.Password, // Şifreyi veritabanındaki ismine göre atıyoruz
+                    Role = "student" // Varsayılan olarak öğrenci
                 };
 
                 _context.Users.Add(newUser);
                 await _context.SaveChangesAsync();
 
-                // 3. Başarılı mesajı ver ve Giriş sayfasına gönder
+                // 3. Başarılı ise Giriş sayfasına yönlendir
                 TempData["Message"] = "Kayıt başarılı! Lütfen giriş yapınız.";
                 return RedirectToAction("Login");
             }
 
+            // Hata varsa formu tekrar göster
             return View(model);
         }
 
         // ==========================================
-        // 👆 YENİ EKLENEN KISIM BİTTİ 👆
+        // 👇 GİRİŞ YAPMA (LOGIN) İŞLEMLERİ 👇
         // ==========================================
 
-
-        // --- ESKİ KODLARIN AYNEN DURUYOR ---
-
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
@@ -85,7 +87,7 @@ namespace LibrarySystem.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.Username ?? ""),
-                    new Claim(ClaimTypes.Role, user.Role ?? "") // Rolü buraya yüklüyoruz
+                    new Claim(ClaimTypes.Role, user.Role ?? "") // Rolü sisteme tanıtıyoruz
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -93,14 +95,17 @@ namespace LibrarySystem.Controllers
                 // Giriş yap
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-                // Admin ise farklı yere, öğrenci ise farklı yere yönlendirebilirsin (Şimdilik Home/Index)
-                return RedirectToAction("Index", "Home");
+                // Başarılı giriş sonrası yönlendirme
+                return RedirectToAction("Index", "Home"); // Veya "Books"
             }
 
             ViewBag.Error = "Kullanıcı adı veya şifre hatalı!";
-
             return View();
         }
+
+        // ==========================================
+        // 👇 ÇIKIŞ YAPMA (LOGOUT) İŞLEMLERİ 👇
+        // ==========================================
 
         public async Task<IActionResult> Logout()
         {

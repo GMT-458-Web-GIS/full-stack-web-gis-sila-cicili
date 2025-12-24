@@ -1,0 +1,17 @@
+@model LibrarySystem.Models.LibraryBranch
+
+@{ ViewData["Title"] = "Şubeyi Sil"; }
+
+<div class="container mt-5">
+    <div class="alert alert-danger">
+        <h3>⚠️ Silme Onayı</h3>
+        <p><strong>@Model.Name</strong> adlı şubeyi silmek istediğinize emin misiniz?</p>
+        <p class="mb-0">Bu işlem geri alınamaz.</p>
+    </div>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <a asp-action="Index" class="btn btn-secondary">İptal</a>
+        <button type="submit" class="btn btn-danger">🗑️ Evet, Sil</button>
+    </form>
+</div>

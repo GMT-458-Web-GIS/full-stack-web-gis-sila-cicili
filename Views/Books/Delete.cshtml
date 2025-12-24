@@ -1,0 +1,56 @@
+@model LibrarySystem.Models.Book
+
+@{
+    ViewData["Title"] = "Kitabı Sil";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="mb-0">⚠️ Silme Onayı</h3>
+                </div>
+                <div class="card-body">
+                    <h4 class="text-center text-danger mb-4">Bu kitabı silmek istediğinize emin misiniz?</h4>
+                    <p class="text-center text-muted">Bu işlem geri alınamaz.</p>
+
+                    <div class="p-3 bg-light rounded border">
+                        <dl class="row mb-0">
+                            <dt class="col-sm-4">Kitap Adı</dt>
+                            <dd class="col-sm-8 fw-bold">@Model.Title</dd>
+
+                            <dt class="col-sm-4">Yazar</dt>
+                            <dd class="col-sm-8">@Model.Author</dd>
+
+                            <dt class="col-sm-4">Kategori</dt>
+                            <dd class="col-sm-8">@Model.Category</dd>
+
+                            <dt class="col-sm-4">Şube</dt>
+                            <dd class="col-sm-8">
+                                @if (Model.LibraryBranch != null)
+                                {
+                                    <span>@Model.LibraryBranch.Name</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Atanmamış</span>
+                                }
+                            </dd>
+
+                            <dt class="col-sm-4">Stok</dt>
+                            <dd class="col-sm-8">@Model.TotalStock</dd>
+                        </dl>
+                    </div>
+
+                    <form asp-action="Delete" class="mt-4 text-center">
+                        <input type="hidden" asp-for="BookId" />
+                        
+                        <a asp-action="Index" class="btn btn-secondary px-4 me-2">İptal</a>
+                        <button type="submit" class="btn btn-danger px-4 fw-bold">Evet, Sil</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
