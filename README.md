@@ -86,3 +86,67 @@ Proje çalışırken API endpointlerini test etmek için tarayıcınızda şu ad
 * **POST** `/api/LibraryApi/branches` - Yeni bir şube ekler (GeoJSON Point).
 * **PUT** `/api/LibraryApi/branches/{id}` - Şube bilgilerini ve konumunu günceller.
 * **DELETE** `/api/LibraryApi/branches/{id}` - Şubeyi siler.
+
+
+
+
+## 🚀 Performans ve Yük Testleri (Load & Stress Testing)
+
+Projenin yüksek trafik altındaki dayanıklılığını ölçmek için endüstri standardı olan **Apache JMeter** kullanılarak testler gerçekleştirilmiştir. Gerçekçi bir senaryo oluşturmak adına veritabanına **50.000 adet kitap kaydı** (Dummy Data) eklenmiş ve testler bu veri seti üzerinde koşulmuştur.
+
+### Test Ortamı ve Konfigürasyon
+* **Test Aracı:** Apache JMeter 5.6.3
+* **Hedef Endpoint:** `GET /api/LibraryApi/books`
+* **Veri Seti:** 50.000+ Kitap Kaydı (PostgreSQL)
+
+### 📊 Test Senaryoları ve Sonuçlar
+
+| Test Tipi | Kullanıcı Sayısı (Threads) | Amaç | Ortalama Yanıt Süresi (Avg) | Sonuç |
+| :--- | :---: | :--- | :---: | :--- |
+| **Load Test** | 100 | Normal kullanım yükü | **34 ms** | ✅ Başarılı |
+| **Stress Test** | 1000 | Sistemi sınıra zorlama | **~180 ms** | ✅ Stabil |
+
+#### 1. Load Test (100 Kullanıcı)
+100 kullanıcının aynı anda sisteme girdiği senaryoda, sistem 50.000 kayıt arasından veriyi **milisaniyeler içinde** getirmiştir.
+![Load Test Grafiği](images/load-test-100.png)
+*(Buraya 100 kişilik Aggregate Graph resminin yolu gelecek)*
+
+#### 2. Stress Test (1000 Kullanıcı)
+Sisteme anlık 1000 kullanıcı ile yüklenilmesine rağmen API çökmemiş (Crash olmadı), sadece yanıt sürelerinde beklenen bir artış gözlemlenmiştir. Hata oranı %0'dır.
+![Stress Test Grafiği](images/stress-test-1000.png)
+*(Buraya 1000 kişilik Aggregate Graph resminin yolu gelecek)*
+
+
+
+
+## ⚡ Performance Monitoring: Database Indexing Experiment
+
+To demonstrate the impact of indexing mechanisms (B-Trees) on query performance, a controlled experiment was conducted using PostgreSQL `EXPLAIN ANALYZE` on a dataset of **50,000 book records**.
+
+### 🧪 Experiment Design
+* **Objective:** Measure the retrieval latency of a specific record using the `Title` column.
+* **Hypothesis:** Adding a B-Tree index will change the operation from a full table scan to a direct index lookup, significantly reducing execution time.
+* **Query Tested:** ```sql
+    SELECT * FROM "books" WHERE "title" = 'Performans Test Kitabı 45000';
+    ```
+
+### 📊 Findings & Analysis
+
+| Metric | Before Indexing (Baseline) | After Indexing (B-Tree) | Improvement |
+| :--- | :--- | :--- | :--- |
+| **Scan Type** | Seq Scan (Sequential Scan) | **Index Scan** | ✅ Optimized |
+| **Execution Time** | **22.742 ms** | **0.196 ms** | **~116x Faster** |
+| **Planning Time** | 2.294 ms | 2.792 ms | Negligible change |
+
+#### 1. Before Indexing (Sequential Scan)
+Without an index, the database performed a **Seq Scan**, checking all 50,000 rows to find the match.
+![Sequential Scan Result](images/Before_Index.png)
+*(Result: 22.742 ms)*
+
+#### 2. After Indexing (B-Tree Optimized)
+After creating a B-Tree index on the `title` column, the database utilized the index structure (**Index Scan**) to locate the record instantly.
+![Index Scan Result](images/After_Index.png)
+*(Result: 0.196 ms)*
+
+### 💡 Conclusion
+The experiment confirms that B-Tree indexing drastically improves read performance for equality lookups, reducing query time by approximately **99%**.
