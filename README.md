@@ -108,12 +108,12 @@ Projenin yüksek trafik altındaki dayanıklılığını ölçmek için endüstr
 
 #### 1. Load Test (100 Kullanıcı)
 100 kullanıcının aynı anda sisteme girdiği senaryoda, sistem 50.000 kayıt arasından veriyi **milisaniyeler içinde** getirmiştir.
-![Load Test Grafiği](images/load-test-100.png)
+![Load Test Grafiği](images/100.png)
 *(Buraya 100 kişilik Aggregate Graph resminin yolu gelecek)*
 
 #### 2. Stress Test (1000 Kullanıcı)
 Sisteme anlık 1000 kullanıcı ile yüklenilmesine rağmen API çökmemiş (Crash olmadı), sadece yanıt sürelerinde beklenen bir artış gözlemlenmiştir. Hata oranı %0'dır.
-![Stress Test Grafiği](images/stress-test-1000.png)
+![Stress Test Grafiği](images/1000.png)
 *(Buraya 1000 kişilik Aggregate Graph resminin yolu gelecek)*
 
 
@@ -140,12 +140,12 @@ To demonstrate the impact of indexing mechanisms (B-Trees) on query performance,
 
 #### 1. Before Indexing (Sequential Scan)
 Without an index, the database performed a **Seq Scan**, checking all 50,000 rows to find the match.
-![Sequential Scan Result](images/Before_Index.png)
+![Sequential Scan Result](images/indexsiz.png)
 *(Result: 22.742 ms)*
 
 #### 2. After Indexing (B-Tree Optimized)
 After creating a B-Tree index on the `title` column, the database utilized the index structure (**Index Scan**) to locate the record instantly.
-![Index Scan Result](images/After_Index.png)
+![Index Scan Result](images/indexli1.png)
 *(Result: 0.196 ms)*
 
 ### 💡 Conclusion
