@@ -80,12 +80,11 @@ Projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izleyin:
     dotnet ef database update
     ```
 
-4.  **Projeyi Başlatın:**
+4. **Projeyi Başlatın:**
     ```bash
     dotnet run
     ```
-    Tarayıcınızda `https://localhost:7239` adresine gidin.
-
+    Terminal ekranında **"Now listening on:"** satırında belirtilen adrese (Örn: `https://localhost:5006` veya `7239`) gidin.
 ---
 
 ## 🔗 API Kullanımı
