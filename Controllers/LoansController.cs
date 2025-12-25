@@ -34,42 +34,52 @@ namespace LibrarySystem.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Loan loan)
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Create(Loan loan)
+{
+    // 1. Kitabı bul ve stok kontrolü yap
+    // Not: Tablo adın Context içinde muhtemelen 'Books' olarak geçiyor.
+    var secilenKitap = await _context.Books.FindAsync(loan.BookId);
+
+    if (secilenKitap != null)
+    {
+        // Önemli: Senin modelinde isim 'CurrentStock'
+        if (secilenKitap.CurrentStock > 0)
         {
-            // 1. Seçilen kullanıcıyı veritabanından bul (UserManager olmadan)
-            // Not: Senin User tablondaki ID string ise bu çalışır, int ise int.Parse(loan.UserId) yapmalısın.
-            var secilenUye = await _context.Users.FindAsync(loan.UserId);
-
-            // 2. Varsayılan Süre (Standart Üye)
-            int oduncSuresi = 15;
-
-            // 3. Kullanıcıyı bulduysak Rolünü kontrol et
-            // Senin Users tablonda "Role" diye bir sütun olduğunu varsayıyorum.
-            if (secilenUye != null)
-            {
-                // Veritabanındaki "Role" sütunu "Akademisyen" mi?
-                if (secilenUye.Role == "Akademisyen") 
-                {
-                    oduncSuresi = 30; // 🎓 Akademisyenlere 30 gün!
-                }
-            }
-
-            // 4. Tarihleri Ayarla
-            loan.BorrowDate = DateOnly.FromDateTime(DateTime.Now);
-            loan.DueDate = DateOnly.FromDateTime(DateTime.Now.AddDays(oduncSuresi)); 
-            loan.Status = "active";
-
-            // 5. Servisi çağır ve kaydet
-            await _loanService.OduncVer(loan);
+            secilenKitap.CurrentStock -= 1;
+            _context.Books.Update(secilenKitap);
             
-            return RedirectToAction(nameof(Index));
+            // Stok değişimini veritabanına hemen yansıtalım
+            await _context.SaveChangesAsync();
         }
-
-        public async Task<IActionResult> Delete(int id)
+        else
         {
-            await _loanService.OduncIptal(id);
-            return RedirectToAction(nameof(Index));
+            ModelState.AddModelError("", "Bu kitabın stoğu tükenmiştir!");
+            ViewData["UserId"] = new SelectList(await _loanService.DropdownIcinUyeler(), "UserId", "Username");
+            ViewData["BookId"] = new SelectList(await _loanService.DropdownIcinKitaplar(), "BookId", "Title");
+            return View(loan);
         }
+    }
+
+    // 2. Kullanıcı Rol Kontrolü ve Süre Hesaplama
+    var secilenUye = await _context.Users.FindAsync(loan.UserId);
+    int oduncSuresi = 15;
+
+    // Küçük harf riskine karşı hem "Akademisyen" hem "academic" kontrolü yapalım
+    if (secilenUye != null && (secilenUye.Role == "Akademisyen" || secilenUye.Role == "Admin")) 
+    {
+        oduncSuresi = 30;
+    }
+
+    // 3. Tarih ve Durum Ayarları
+    loan.BorrowDate = DateOnly.FromDateTime(DateTime.Now);
+    loan.DueDate = DateOnly.FromDateTime(DateTime.Now.AddDays(oduncSuresi)); 
+    loan.Status = "active";
+
+    // 4. Ödünç işlemini servisle tamamla
+    await _loanService.OduncVer(loan);
+    
+    return RedirectToAction(nameof(Index));
+}
     }
 }

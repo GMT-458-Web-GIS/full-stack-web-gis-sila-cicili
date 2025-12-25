@@ -31,9 +31,12 @@
                     <i class="bi bi-list-ul"></i> Listeye Dön
                 </a>
 
-                <a asp-controller="LibraryBranches" asp-action="Create" class="btn btn-light text-primary fw-bold">
-                    ➕ Yeni Şube Ekle
-                </a>
+                @if (User.IsInRole("Admin"))
+{
+    <a asp-controller="LibraryBranches" asp-action="Create" class="btn btn-light text-primary fw-bold">
+        ➕ Yeni Şube Ekle
+    </a>
+}
             </div>
         </div>
 
