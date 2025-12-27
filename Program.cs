@@ -10,7 +10,7 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 builder.Services.AddControllersWithViews();
 
-// 👇 SWAGGER EKLENTİSİ (Paket yüklü değilse burası kızarır)
+// 👇 SWAGGER EKLENTİSİ
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -23,7 +23,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
     });
 
-// VERİTABANI (UseNetTopologySuite için paket gerekir)
+// VERİTABANI
 builder.Services.AddDbContext<KütüphaneeContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("LibraryContext"), 
         o => o.UseNetTopologySuite())); 
@@ -37,11 +37,33 @@ builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 var app = builder.Build();
 
+// --- 🔥 YENİ EKLENEN KISIM: OTOMATİK TABLO OLUŞTURMA ---
+// Bu kod, site açılırken veritabanı boşsa tabloları senin yerine kurar.
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        // Senin veritabanı ismin "KütüphaneeContext" olduğu için burayı düzelttim.
+        var context = services.GetRequiredService<KütüphaneeContext>();
+        
+        // Bu komut "update-database" işlemini sunucuda otomatik yapar
+        context.Database.Migrate(); 
+    }
+    catch (Exception ex)
+    {
+        // Hata olursa loglara basar ama siteyi çökertmez
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Tablolar oluşturulurken bir hata meydana geldi.");
+    }
+}
+// --- BİTİŞ ---
+
 // 2. MIDDLEWARE AYARLARI
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();    // Paket yüklü değilse kızarır
-    app.UseSwaggerUI();  // Paket yüklü değilse kızarır
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 else
 {
