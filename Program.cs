@@ -23,7 +23,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
     });
 
-// VERİTABANI
+// VERİTABANI BAĞLANTISI
+// Not: Burada 'LibraryContext' yazması doğru, çünkü ConnectionString ismin bu.
 builder.Services.AddDbContext<KütüphaneeContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("LibraryContext"), 
         o => o.UseNetTopologySuite())); 
@@ -37,27 +38,25 @@ builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 var app = builder.Build();
 
-// --- 🔥 YENİ EKLENEN KISIM: OTOMATİK TABLO OLUŞTURMA ---
-// Bu kod, site açılırken veritabanı boşsa tabloları senin yerine kurar.
+// --- 🔥 SİHİRLİ KOD BURASI: TABLOLARI OLUŞTURUYOR ---
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     try
     {
-        // Senin veritabanı ismin "KütüphaneeContext" olduğu için burayı düzelttim.
+        // Senin veritabanı sınıfın 'KütüphaneeContext' olduğu için bunu çağırıyoruz
         var context = services.GetRequiredService<KütüphaneeContext>();
         
-        // Bu komut "update-database" işlemini sunucuda otomatik yapar
+        // Bu komut, veritabanı boşsa tabloları (Books, Users vb.) otomatik oluşturur
         context.Database.Migrate(); 
     }
     catch (Exception ex)
     {
-        // Hata olursa loglara basar ama siteyi çökertmez
         var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Tablolar oluşturulurken bir hata meydana geldi.");
+        logger.LogError(ex, "Tablolar oluşturulurken bir hata oluştu.");
     }
 }
-// --- BİTİŞ ---
+// --- SİHİRLİ KOD BİTTİ ---
 
 // 2. MIDDLEWARE AYARLARI
 if (app.Environment.IsDevelopment())
