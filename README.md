@@ -47,6 +47,10 @@ Aşağıdaki tablo, proje gereksinimlerinin ne ölçüde karşılandığını ö
 
 ## 📸 Ekran Görüntüleri (Screenshots)
 
+### 1. Giriş ve Kayıt Paneli (Dashboard)
+Kullanıcılar için giriş ve kayıt panaeli.
+![Giriş](images/kullanıcı.png)
+
 ### 1. Yönetim Paneli (Dashboard)
 Yöneticiler için özet istatistikler ve grafiksel raporlar.
 ![Panel](images/kullanıcı.png)
