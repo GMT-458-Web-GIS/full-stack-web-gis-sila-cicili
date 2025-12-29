@@ -39,7 +39,6 @@ Aşağıdaki tablo, proje gereksinimlerinin ne ölçüde karşılandığını ö
 * **Test & Dokümantasyon:** Apache JMeter, Swagger UI
 
 ---
-### Proje Tanıtım Videosu
 
 ---
 
