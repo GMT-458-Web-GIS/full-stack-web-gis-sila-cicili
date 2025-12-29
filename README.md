@@ -49,7 +49,7 @@ Aşağıdaki tablo, proje gereksinimlerinin ne ölçüde karşılandığını ö
 
 ### 1. Giriş ve Kayıt Paneli (Dashboard)
 Kullanıcılar için giriş ve kayıt panaeli.
-![Giriş](images/kullanıcı.png)
+![Giriş](images/giriş.png)
 
 ### 1. Yönetim Paneli (Dashboard)
 Yöneticiler için özet istatistikler ve grafiksel raporlar.
