@@ -40,7 +40,7 @@ Aşağıdaki tablo, proje gereksinimlerinin ne ölçüde karşılandığını ö
 
 ---
 ### Proje Tanıtım Videosu
-[Videoyu İzlemek İçin Tıklayın](LibrarySystem/images/Kütüphane_Sistemi.mp4)
+
 ---
 
 ## 📸 Ekran Görüntüleri (Screenshots)
