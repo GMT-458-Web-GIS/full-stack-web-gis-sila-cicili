@@ -40,7 +40,7 @@ Aşağıdaki tablo, proje gereksinimlerinin ne ölçüde karşılandığını ö
 
 ---
 Sistem Tanıtım Videosu
-[![Tanıtım Videosu](images/Ekran%20görüntüsü%202025-12-29%20191223.png)](https://www.youtube.com/watch?v=knZImprxyPM)
+[![Tanıtım Videosu]([images/Ekran%20görüntüsü%202025-12-29%20191223.png](http://img.youtube.com/vi/knZImprxyPM/maxresdefault.jpg))](https://www.youtube.com/watch?v=knZImprxyPM)
 ---
 
 ## 📸 Ekran Görüntüleri (Screenshots)
