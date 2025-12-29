@@ -41,7 +41,8 @@ Aşağıdaki tablo, proje gereksinimlerinin ne ölçüde karşılandığını ö
 
 
 ### Sistem Tanıtım Videosu
-![Tanıtım Videosu](http://img.youtube.com/vi/knZImprxyPM/maxresdefault.jpg))](https://www.youtube.com/watch?v=knZImprxyPM)
+![Tanıtım Videosu](http://img.youtube.com/vi/knZImprxyPM/maxresdefault.jpg)
+(https://www.youtube.com/watch?v=knZImprxyPM)
 
 
 ## 📸 Ekran Görüntüleri (Screenshots)
