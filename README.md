@@ -39,7 +39,10 @@ Aşağıdaki tablo, proje gereksinimlerinin ne ölçüde karşılandığını ö
 * **Test & Dokümantasyon:** Apache JMeter, Swagger UI
 
 ---
+<<<<<<< HEAD
 [![Tanıtım Videosu](images/Ekran%20görüntüsü%202025-12-29%20191223.png)](https://www.youtube.com/watch?v=knZImprxyPM)
+=======
+>>>>>>> 15fb2368cee16e2150962e6b4425dff41d269ef1
 
 ---
 
