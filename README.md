@@ -39,6 +39,9 @@ Aşağıdaki tablo, proje gereksinimlerinin ne ölçüde karşılandığını ö
 * **Test & Dokümantasyon:** Apache JMeter, Swagger UI
 
 ---
+### Proje Tanıtım Videosu
+[Videoyu İzlemek İçin Tıklayın](LibrarySystem/images/Kütüphane_Sistemi.mp4)
+---
 
 ## 📸 Ekran Görüntüleri (Screenshots)
 
@@ -58,7 +61,7 @@ PostGIS destekli şube ekleme ve görüntüleme ekranı.
 
 ## ⚙️ Kurulum (Installation)
 
-Projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izleyin:
+Projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izleyin;
 
 1.  **Projeyi Klonlayın:**
     ```bash

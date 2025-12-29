@@ -116,3 +116,9 @@ C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\obj\Debug\n
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\obj\Debug\net8.0\LibrarySystem.pdb
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\obj\Debug\net8.0\LibrarySystem.genruntimeconfig.cache
 C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\obj\Debug\net8.0\ref\LibrarySystem.dll
+C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net8.0\publish\web.config
+C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net8.0\publish\appsettings.Development.json
+C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net8.0\publish\appsettings.json
+C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net8.0\publish\LibrarySystem.deps.json
+C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net8.0\publish\LibrarySystem.runtimeconfig.json
+C:\Users\casper\OneDrive\Masaüstü\kütüphanesistemi\LibrarySystem\bin\Debug\net8.0\publish\LibrarySystem.staticwebassets.endpoints.json
