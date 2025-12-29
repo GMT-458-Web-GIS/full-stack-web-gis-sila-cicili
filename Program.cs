@@ -2,7 +2,7 @@ using LibrarySystem.Services;
 using Microsoft.EntityFrameworkCore;
 using LibrarySystem.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Npgsql; // 🛠️ Bunu ekledik (Adres dönüştürmek için)
+using Npgsql; // 🛠️ ADRES DÖNÜŞTÜRÜCÜ İÇİN GEREKLİ
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,17 +25,17 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 // ---------------------------------------------------------
-// 🔥 VERİTABANI BAĞLANTISI (GÜÇLENDİRİLMİŞ KOD) 🔥
+// 🔥 VERİTABANI BAĞLANTISI (AKILLI KOD) 🔥
 // ---------------------------------------------------------
 
 var connectionString = "";
 
-// 1. Railway'den gelen otomatik adresi al (DATABASE_URL)
+// 1. Railway'den gelen otomatik adresi al
 var railwayDatabaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
 
 if (!string.IsNullOrEmpty(railwayDatabaseUrl))
 {
-    // Railway adresi genellikle 'postgres://' ile başlar, bunu C#'ın anlayacağı formata çeviriyoruz:
+    // Railway adresi 'postgres://' ile başlar. Bunu parçalayıp düzeltiyoruz:
     try 
     {
         var databaseUri = new Uri(railwayDatabaseUrl);
@@ -55,7 +55,7 @@ if (!string.IsNullOrEmpty(railwayDatabaseUrl))
     }
     catch
     {
-        // Çeviremezse olduğu gibi kullanmayı dener (Yedek plan)
+        // Çeviremezse olduğu gibi kullanmayı dener (Yedek)
         connectionString = railwayDatabaseUrl;
     }
 }
@@ -92,8 +92,7 @@ using (var scope = app.Services.CreateScope())
     {
         var context = services.GetRequiredService<KütüphaneeContext>();
         
-        // 👇 İŞTE BU SATIR TERMİNALLE UĞRAŞMANI ENGELLER!
-        // Veritabanına bağlanır ve "PostGIS eklentisini aç" der.
+        // 👇 BU SATIR ÇOK ÖNEMLİ: HARİTA ÖZELLİĞİNİ OTOMATİK AÇAR
         context.Database.ExecuteSqlRaw("CREATE EXTENSION IF NOT EXISTS postgis;");
         
         // Tabloları oluşturur
