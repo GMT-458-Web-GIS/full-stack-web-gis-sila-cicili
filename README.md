@@ -38,11 +38,12 @@ Aşağıdaki tablo, proje gereksinimlerinin ne ölçüde karşılandığını ö
 * **Görselleştirme:** Chart.js (İstatistikler), Leaflet/Google Maps (Harita Arayüzü)
 * **Test & Dokümantasyon:** Apache JMeter, Swagger UI
 
----
-Sistem Tanıtım Videosu
+
+
+### Sistem Tanıtım Videosu
 ![Tanıtım Videosu](images/Ekran görüntüsü 2025-12-29 191223.png)
 (http://img.youtube.com/vi/knZImprxyPM/maxresdefault.jpg))](https://www.youtube.com/watch?v=knZImprxyPM)
----
+
 
 ## 📸 Ekran Görüntüleri (Screenshots)
 
