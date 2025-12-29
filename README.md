@@ -58,7 +58,7 @@ PostGIS destekli şube ekleme ve görüntüleme ekranı.
 
 ## ⚙️ Kurulum (Installation)
 
-Projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izleyin:
+Projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izleyin;
 
 1.  **Projeyi Klonlayın:**
     ```bash

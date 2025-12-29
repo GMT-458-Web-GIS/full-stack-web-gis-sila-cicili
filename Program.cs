@@ -96,7 +96,7 @@ using (var scope = app.Services.CreateScope())
         context.Database.ExecuteSqlRaw("CREATE EXTENSION IF NOT EXISTS postgis;");
         
         // Tabloları oluşturur
-        context.Database.Migrate(); 
+        context.Database.EnsureCreated();
     }
     catch (Exception ex)
     {
