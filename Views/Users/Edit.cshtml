@@ -16,6 +16,11 @@
                     <label class="form-label">Soyad</label>
                     <input asp-for="LastName" class="form-control" required />
                 </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Kullanıcı Adı</label>
+                    <input asp-for="Username" class="form-control" readonly />
+                </div>
                 <div class="mb-3">
                     <label class="form-label">Email</label>
                     <input asp-for="Email" class="form-control" required />
@@ -29,6 +34,7 @@
                     <select asp-for="Role" class="form-select">
                         <option value="student">Öğrenci</option>
                         <option value="admin">Yönetici</option>
+                        <option value="Academic">Akademisyen</option>
                     </select>
                 </div>
 

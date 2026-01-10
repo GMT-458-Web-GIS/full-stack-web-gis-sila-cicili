@@ -11,21 +11,35 @@
 
                 <div class="mb-3">
                     <label class="form-label fw-bold">Üye Seçin</label>
-                    <select asp-for="UserId" class="form-select" asp-items="ViewBag.UserId">
-                        <option value="">-- Üye Seçiniz --</option>
+                    
+                    <select id="userSelect" name="UserId" class="form-select" onchange="sureyiGuncelle()" required>
+                        <option value="" selected disabled>-- Üye Seçiniz --</option>
+                        
+                        @if (ViewBag.MembersList != null)
+                        {
+                            foreach (var user in ViewBag.MembersList as List<LibrarySystem.Models.User>)
+                            {
+                                <option value="@user.UserId" data-role="@user.Role">
+                                    @user.FirstName @user.LastName (@user.Username)
+                                </option>
+                            }
+                        }
                     </select>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label fw-bold">Kitap Seçin</label>
-                    <select asp-for="BookId" class="form-select" asp-items="ViewBag.BookId">
+                    <select asp-for="BookId" class="form-select" asp-items="ViewBag.BookId" required>
                          <option value="">-- Kitap Seçiniz --</option>
                     </select>
                     <small class="text-muted">* Sadece stoğu olan kitaplar listelenir.</small>
                 </div>
 
-                <div class="alert alert-info">
-                    ℹ️ Kitap bugün verilecek ve otomatik olarak <b>15 gün</b> süre tanımlanacaktır.
+                <div class="alert alert-info mt-4">
+                    <i class="bi bi-info-circle-fill"></i> 
+                    Kitap bugün verilecek ve seçilen üyeye otomatik olarak 
+                    <strong id="gunSayisi" style="font-size: 1.3em; text-decoration: underline;">15</strong> 
+                    gün süre tanımlanacaktır.
                 </div>
 
                 <button type="submit" class="btn btn-success">Ödünç Ver</button>
@@ -34,3 +48,36 @@
         </div>
     </div>
 </div>
+
+<script>
+    function sureyiGuncelle() {
+        // 1. Seçim kutusunu bul
+        var selectKutusu = document.getElementById("userSelect");
+        
+        // 2. O an seçili olan satırı (option) yakala
+        var secilenOption = selectKutusu.options[selectKutusu.selectedIndex];
+        
+        // 3. İçine gizlediğimiz 'data-role' bilgisini oku
+        var kullaniciRolu = secilenOption.getAttribute("data-role");
+        
+        // 4. Varsayılan süre 15 gün
+        var sure = "15";
+
+        // 5. Eğer rol Akademisyen veya Yönetici ise süreyi 30 yap
+        // (Veritabanında rolün nasıl yazıldığını bilmediğimiz için tüm ihtimalleri kontrol ediyoruz)
+        if (kullaniciRolu === "Academic" || kullaniciRolu === "Akademisyen" || kullaniciRolu === "admin" || kullaniciRolu === "Yönetici") {
+            sure = "30";
+        }
+
+        // 6. Ekrandaki yazıyı güncelle
+        var yaziAlani = document.getElementById("gunSayisi");
+        yaziAlani.innerText = sure;
+
+        // 7. Eğer 30 gün ise dikkat çekmesi için rengini koyu pembe yap
+        if (sure === "30") {
+            yaziAlani.style.color = "#d63384"; 
+        } else {
+            yaziAlani.style.color = "black";
+        }
+    }
+</script>

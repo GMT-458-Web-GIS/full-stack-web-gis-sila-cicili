@@ -26,9 +26,17 @@
                     <td>@user.Username</td>
                     <td>@user.Email</td>
                     <td>
-                        @if(user.Role == "admin") {
+                        @* 👇 ROL KONTROLÜ BURADA GÜNCELLENDİ 👇 *@
+                        @if(user.Role == "admin") 
+                        {
                             <span class="badge bg-danger">Yönetici</span>
-                        } else {
+                        } 
+                        else if (user.Role == "Academic") 
+                        {
+                            <span class="badge bg-warning text-dark">Akademisyen</span>
+                        }
+                        else 
+                        {
                             <span class="badge bg-info text-dark">Öğrenci</span>
                         }
                     </td>

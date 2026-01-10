@@ -29,7 +29,7 @@ namespace LibrarySystem.Controllers
             List<SelectListItem> roller = new List<SelectListItem>
             {
                 new SelectListItem { Text = "Öğrenci", Value = "student" }, // veya "member" (veritabanında ne kullanıyorsan)
-                new SelectListItem { Text = "Akademisyen", Value = "Akademisyen" }, // 🎓 İşte aradığın özellik
+                new SelectListItem { Text = "Akademisyen", Value = "Academic" }, // 🎓 İşte aradığın özellik
                 new SelectListItem { Text = "Yönetici (Admin)", Value = "admin" }
             };
 
@@ -63,7 +63,7 @@ namespace LibrarySystem.Controllers
             List<SelectListItem> roller = new List<SelectListItem>
             {
                 new SelectListItem { Text = "Öğrenci", Value = "student" },
-                new SelectListItem { Text = "Akademisyen", Value = "Akademisyen" },
+                new SelectListItem { Text = "Akademisyen", Value = "Academic" },
                 new SelectListItem { Text = "Yönetici (Admin)", Value = "admin" }
             };
             ViewBag.Roles = roller;
