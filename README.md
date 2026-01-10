@@ -62,7 +62,7 @@ PostGIS-supported branch addition and viewing screen.
 
 ---
 
-## ⚙️ Installation
+## ⚙️ Installation:
 
 Follow the steps below to run the project on your local machine:
 
