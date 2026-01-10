@@ -1,165 +1,157 @@
-# 📚 Web GIS Library Management System (Kütüphane Yönetim Sistemi)
+# 📚 Web GIS Library Management System
 
 ![.NET Core](https://img.shields.io/badge/.NET%20Core-7.0-purple)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-blue)
 ![PostGIS](https://img.shields.io/badge/PostGIS-Enabled-green)
 ![License](https://img.shields.io/badge/License-MIT-orange)
 
-Bu proje, **GMT 458 – Web GIS** dersi final ödevi kapsamında geliştirilmiş; mekansal (spatial) ve mekansal olmayan verileri bir arada yöneten, farklı kullanıcı rollerine sahip web tabanlı bir **Kütüphane Bilgi Sistemidir**.
+This project was developed as a final assignment for the **GMT 458 – Web GIS** course. It is a web-based **Library Information System** capable of managing both spatial and non-spatial data, designed for users with different roles.
 
-Proje **ASP.NET Core MVC**, **PostgreSQL (PostGIS)** ve **Entity Framework Core** teknolojileri kullanılarak modern mimariye uygun olarak tasarlanmıştır.
+The project is designed with a modern architecture using **ASP.NET Core MVC**, **PostgreSQL (PostGIS)**, and **Entity Framework Core**.
 
 ---
 
-## 🚀 Proje Özellikleri ve Gereksinimler (Requirements Rubric)
+## 🚀 Project Features and Requirements Rubric
 
-Aşağıdaki tablo, proje gereksinimlerinin ne ölçüde karşılandığını özetlemektedir:
+The table below summarizes to what extent the project requirements have been met:
 
-| Gereksinim (Requirement) | Durum | Açıklama |
+| Requirement | Status | Description |
 | :--- | :---: | :--- |
-| **Source Code Management** | ✅ Tamam | Proje versiyon kontrolü GitHub üzerinde sağlanmıştır. |
-| **Managing User Types** | ✅ Tamam | **3 Farklı Rol:** <br>🎓 **Öğrenci:** 15 gün ödünç alma süresi.<br>👨‍🏫 **Akademisyen:** 30 gün ödünç alma süresi.<br>🛡️ **Yönetici (Admin):** Tam yetkili. |
-| **CRUD Operations (Spatial)** | ✅ Tamam | Kütüphane şubeleri (Spatial Point) harita üzerinden **Eklenebilir, Silinebilir, Güncellenebilir ve Listelenebilir**. |
-| **Authentication** | ✅ Tamam | Cookie tabanlı güvenli **Üye Kaydı (Sign-up)** ve **Giriş (Login)** mekanizması. |
-| **API Development** | ✅ Tamam | **RESTful API:** Spatial (Şube) ve Non-spatial (Kitap) veriler dışarıya açılmıştır. <br>📄 **Swagger:** `/swagger` adresinde dökümantasyon mevcuttur. |
-| **Database** | ✅ Tamam | İlişkisel veriler için **PostgreSQL**, coğrafi veriler için **PostGIS** kullanılmıştır. |
-| **Dashboard** | ✅ Tamam | Admin panelinde anlık istatistikler ve kitap kategorilerini gösteren **Chart.js** grafikleri bulunur. |
-| **Performance Testing** | ✅ Tamam | **Apache JMeter** ile Load ve Stress testleri uygulanmış, yanıt süreleri analiz edilmiştir. |
-| **Performance Monitoring** | ✅ Tamam | **B-Tree** ve **R-Tree** indekslemenin sorgu performansına etkisi analiz edilmiştir. |
+| **Source Code Management** | ✅ Done | Project version control is provided via GitHub. |
+| **Managing User Types** | ✅ Done | **3 Different Roles:** <br>🎓 **Student:** 15-day borrowing period.<br>👨‍🏫 **Academician:** 30-day borrowing period.<br>🛡️ **Admin:** Full authorization. |
+| **CRUD Operations (Spatial)** | ✅ Done | Library branches (Spatial Point) can be **Added, Deleted, Updated, and Listed** via the map. |
+| **Authentication** | ✅ Done | Secure cookie-based **Sign-up** and **Login** mechanism. |
+| **API Development** | ✅ Done | **RESTful API:** Spatial (Branch) and Non-spatial (Book) data are exposed. <br>📄 **Swagger:** Documentation is available at `/swagger`. |
+| **Database** | ✅ Done | **PostgreSQL** is used for relational data, and **PostGIS** is used for geographic data. |
+| **Dashboard** | ✅ Done | The admin panel includes real-time statistics and **Chart.js** graphs showing book categories. |
+| **Performance Testing** | ✅ Done | Load and Stress tests were applied using **Apache JMeter**, and response times were analyzed. |
+| **Performance Monitoring** | ✅ Done | The effect of **B-Tree** and **R-Tree** indexing on query performance was analyzed. |
 
 ---
 
-## 🛠️ Teknoloji Yığını (Tech Stack)
+## 🛠️ Tech Stack
 
 * **Backend:** ASP.NET Core 7.0 (MVC & Web API)
-* **Veritabanı:** PostgreSQL 14+ & PostGIS Extension
-* **ORM:** Entity Framework Core (NetTopologySuite ile mekansal veri desteği)
+* **Database:** PostgreSQL 14+ & PostGIS Extension
+* **ORM:** Entity Framework Core (Spatial data support with NetTopologySuite)
 * **Frontend:** HTML5, Bootstrap 5, JavaScript
-* **Görselleştirme:** Chart.js (İstatistikler), Leaflet/Google Maps (Harita Arayüzü)
-* **Test & Dokümantasyon:** Apache JMeter, Swagger UI
+* **Visualization:** Chart.js (Statistics), Leaflet/Google Maps (Map Interface)
+* **Test & Documentation:** Apache JMeter, Swagger UI
 
 ---
-<<<<<<< HEAD
-<<<<<<< HEAD
-[![Tanıtım Videosu](images/Ekran%20görüntüsü%202025-12-29%20191223.png)](https://www.youtube.com/watch?v=knZImprxyPM)
-=======
->>>>>>> 15fb2368cee16e2150962e6b4425dff41d269ef1
+![Intro Video](images/Ekrangörüntüsü2025-12-29191223.png)
 
-=======
-Sistem Tanıtım Videosu
-[![Tanıtım Videosu](images/Ekran%20görüntüsü%202025-12-29%20191223.png)](https://www.youtube.com/watch?v=knZImprxyPM)
->>>>>>> 7c8982640f4de4496a53cf195401e72e1d730956
 ---
 
-## 📸 Ekran Görüntüleri (Screenshots)
+## 📸 Screenshots
 
-### 1. Yönetim Paneli (Dashboard)
-Yöneticiler için özet istatistikler ve grafiksel raporlar.
+### 1. Management Panel (Dashboard)
+Summary statistics and graphical reports for administrators.
 ![Panel](images/kullanıcı.png)
 
-### 2. Swagger API Dokümantasyonu
-RESTful servislerin test edilebileceği arayüz.
+### 2. Swagger API Documentation
+Interface for testing RESTful services.
 ![Swagger](images/swagger.png)
 
-### 3. Harita ve Şube Yönetimi
-PostGIS destekli şube ekleme ve görüntüleme ekranı.
-![Harita](images/harita.png)
+### 3. Map and Branch Management
+PostGIS-supported branch addition and viewing screen.
+![Map](images/harita.png)
 
 ---
 
-## ⚙️ Kurulum (Installation)
+## ⚙️ Installation
 
-Projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izleyin;
+Follow the steps below to run the project on your local machine:
 
-1.  **Projeyi Klonlayın:**
+1.  **Clone the Project:**
     ```bash
-    git clone [https://github.com/KULLANICI_ADIN/LibrarySystem.git](https://github.com/KULLANICI_ADIN/LibrarySystem.git)
+    git clone [https://github.com/YOUR_USERNAME/LibrarySystem.git](https://github.com/YOUR_USERNAME/LibrarySystem.git)
     cd LibrarySystem
     ```
 
-2.  **Veritabanı Bağlantısını Yapılandırın:**
-    `appsettings.json` dosyasını açın ve `ConnectionStrings` bölümünü kendi PostgreSQL bilgilerinize göre düzenleyin:
+2.  **Configure Database Connection:**
+    Open the `appsettings.json` file and edit the `ConnectionStrings` section according to your own PostgreSQL credentials:
     ```json
     "ConnectionStrings": {
-      "LibraryContext": "Host=localhost;Database=LibraryDb;Username=postgres;Password=sifreniz"
+      "LibraryContext": "Host=localhost;Database=LibraryDb;Username=postgres;Password=your_password"
     }
     ```
 
-3.  **Veritabanını Oluşturun (Migration):**
-    Terminali proje dizininde açın ve aşağıdaki komutu çalıştırın:
+3.  **Create the Database (Migration):**
+    Open the terminal in the project directory and run the following command:
     ```bash
     dotnet ef database update
     ```
 
-4. **Projeyi Başlatın:**
+4.  **Start the Project:**
     ```bash
     dotnet run
     ```
 ---
 
-## 🔗 API Kullanımı
+## 🔗 API Usage
 
-Proje çalışırken API endpointlerini test etmek için:
+To test API endpoints while the project is running:
 👉 **URL:** `https://localhost:7239/swagger`
 
-| Metot | Endpoint | Açıklama |
+| Method | Endpoint | Description |
 | :--- | :--- | :--- |
-| **GET** | `/api/LibraryApi/branches` | Tüm kütüphane şubelerini (GeoJSON) getirir. |
-| **POST** | `/api/LibraryApi/branches` | Yeni bir şube ekler. |
-| **PUT** | `/api/LibraryApi/branches/{id}` | Şube bilgilerini günceller. |
-| **DELETE** | `/api/LibraryApi/branches/{id}` | Şubeyi siler. |
+| **GET** | `/api/LibraryApi/branches` | Retrieves all library branches (GeoJSON). |
+| **POST** | `/api/LibraryApi/branches` | Adds a new branch. |
+| **PUT** | `/api/LibraryApi/branches/{id}` | Updates branch information. |
+| **DELETE** | `/api/LibraryApi/branches/{id}` | Deletes the branch. |
 
 ---
 
-## 🚀 Performans ve Yük Testleri (Load & Stress Testing)
-Bu stres testi, uygulamanın normal kullanım sınırlarının çok ötesindeki yükler altında (Peak Traffic) kararlılığını ölçmek amacıyla gerçekleştirilmiştir. Hedefimiz, 600 eşzamanlı kullanıcının sisteme aniden yüklenmesi durumunda; veritabanı bağlantı havuzunun (connection pool) tıkanıp tıkanmadığını, API'nin çöküp çökmediğini (Crash) ve sistemin veri bütünlüğünü koruyup koruyamadığını analiz etmektir. Bu test ile sistemin sadece hızlı değil, aynı zamanda zorlu koşullarda sürdürülebilir ve dayanıklı (Resilient) olduğu doğrulanmak istenmiştir. 
+## 🚀 Performance and Load Testing
+This stress test was conducted to measure the stability of the application under loads far exceeding normal usage limits (Peak Traffic). The goal is to analyze whether the database connection pool clogs, if the API crashes, and if data integrity is maintained when 600 concurrent users suddenly access the system. This test aims to confirm that the system is not only fast but also sustainable and resilient under challenging conditions.
 
 ---
-Sistemin dayanıklılığını ölçmek için **Apache JMeter** kullanılarak testler gerçekleştirilmiştir. Veritabanına **50.000 adet Dummy (sahte) kitap verisi** eklenmiş ve testler bu set üzerinde koşulmuştur.
+**Apache JMeter** was used to measure system resilience. **50,000 dummy book records** were added to the database, and tests were run on this dataset.
 
-### 📊 Test Sonuçları
+### 📊 Test Results
 
-| Test Tipi | Kullanıcı (Threads) | Amaç | Ortalama Yanıt Süresi | Sonuç |
+| Test Type | Users (Threads) | Purpose | Avg Response Time | Result |
 | :--- | :---: | :--- | :---: | :--- |
-| **Load Test** | 100 | Normal kullanım simülasyonu | **34 ms** | ✅ Başarılı |
-| **Stress Test** | 600 | Sistemi sınıra zorlama | **3400 ms** | ✅ Stabil |
+| **Load Test** | 100 | Simulation of normal usage | **34 ms** | ✅ Successful |
+| **Stress Test** | 600 | Pushing the system to limits | **3400 ms** | ✅ Stable |
 
-#### 1. Load Test (100 Kullanıcı)
-![Load Test Grafiği](images/100.png)
+#### 1. Load Test (100 Users)
+![Load Test Graph](images/100.png)
 
-#### 2. Stress Test (600 Kullanıcı)
-![Stress Test Grafiği](images/1000.png)
+#### 2. Stress Test (600 Users)
+![Stress Test Graph](images/1000.png)
 ---
-1000 kullanıcılı stres testi sonucunda sistem, normal çalışma süresinin üzerinde (3.4 sn) yanıt verse de kesintisiz erişilebilirlik (100% Availability) sağlamıştır. Herhangi bir HTTP 500 hatası veya sistem çökmesi yaşanmamış olması, altyapının yüksek trafik dalgalanmalarını (Traffic Spikes) tolere edebilecek sağlamlıkta olduğunu göstermektedir.
+As a result of the 1000-user stress test, although the system responded above the normal operating time (3.4 sec), it provided uninterrupted accessibility (100% Availability). The absence of any HTTP 500 errors or system crashes indicates that the infrastructure is robust enough to tolerate traffic spikes.
 
 ---
 
-## ⚡ Veritabanı İndeksleme Deneyi (Performance Monitoring)
+## ⚡ Database Indexing Experiment (Performance Monitoring)
 
-Veritabanı indekslemenin (B-Tree) sorgu performansına etkisini gözlemlemek için PostgreSQL `EXPLAIN ANALYZE` komutu kullanılarak bir deney yapılmıştır.
+An experiment was conducted using the PostgreSQL `EXPLAIN ANALYZE` command to observe the effect of database indexing (B-Tree) on query performance.
 
-* **Senaryo:** `title` sütunu üzerinden belirli bir kitabın aranması.
-* **Veri Seti:** 50.000 Satır.
-* **Sorgu:**
+* **Scenario:** Searching for a specific book by the `title` column.
+* **Dataset:** 50,000 Rows.
+* **Query:**
     ```sql
     SELECT * FROM "books" WHERE "title" = 'Performans Test Kitabı 45000';
     ```
 
-### 🧪 Sonuçlar ve Karşılaştırma
+### 🧪 Results and Comparison
 
-| Metrik | İndeks Öncesi (Sequential Scan) | İndeks Sonrası (B-Tree Index Scan) | İyileşme |
+| Metric | Pre-Index (Sequential Scan) | Post-Index (B-Tree Index Scan) | Improvement |
 | :--- | :--- | :--- | :---: |
-| **Tarama Türü** | Tüm tablo okunur (Seq Scan) | Doğrudan adrese gidilir (Index Scan) | - |
-| **Sorgu Süresi** | **22.742 ms** | **0.100 ms** | **~%99** 🚀 |
-| **Planlama Süresi**| 2.294 ms | 4.961 ms | - |
+| **Scan Type** | Reads all rows (Seq Scan) | Goes directly to address (Index Scan) | - |
+| **Query Time** | **22.742 ms** | **0.100 ms** | **~%99** 🚀 |
+| **Planning Time**| 2.294 ms | 4.961 ms | - |
 
-#### 1. İndeks Öncesi (Sequential Scan)
-Index olmadığı için veritabanı 50.000 satırın tamamını tek tek kontrol etmek zorunda kalmıştır.
+#### 1. Pre-Index (Sequential Scan)
+Since there was no index, the database had to check all 50,000 rows one by one.
 ![Sequential Scan](images/indexsiz.png)
 
-#### 2. İndeks Sonrası (B-Tree Optimized)
-`title` sütununa B-Tree indeksi eklendikten sonra veri nokta atışı bulunmuştur.
+#### 2. Post-Index (B-Tree Optimized)
+After adding a B-Tree index to the `title` column, the data was found instantly.
 ![Index Scan](images/indexli1.png)
 
 ---
-*Bu proje GMT 458 dersi için Sıla CİCİLİ tarafından hazırlanmıştır.*
+*This project was prepared by Sıla CİCİLİ for the GMT 458 course.*
