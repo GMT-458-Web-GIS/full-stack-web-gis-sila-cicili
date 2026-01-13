@@ -1,9 +1,10 @@
+Link: https://www.youtube.com/watch?v=knZImprxyPM
 # 📚 Web GIS Library Management System
 
 ![.NET Core](https://img.shields.io/badge/.NET%20Core-7.0-purple)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-blue)
 ![PostGIS](https://img.shields.io/badge/PostGIS-Enabled-green)
-![License](https://img.shields.io/badge/License-MIT-orange)
+
 
 This project was developed as a final assignment for the **GMT 458 – Web GIS** course. It is a web-based **Library Information System** capable of managing both spatial and non-spatial data, designed for users with different roles.
 
